@@ -1,11 +1,12 @@
-# Proxy Helpers
+# Proxy Helper
 
-Small Windows console program to auto-detect the current HTTP proxy (if any)
-and display on the console.
+A small Windows console program to auto-detect the current HTTP proxy (if any)
+and display settings needed for various programs.
 
-Useful for generating settings for command-line programs like curl, npm, pip, etc.
+This should be useful developers behind corporate proxies that need to use curl,
+httpie, NPM, pip, etc.
 
-In cygwin, git-bash or msys2:
+In a bash-like shell (e.g. cygwin, git-bash or msys2):
 
 ```
 $ ./proxyhelper --help
