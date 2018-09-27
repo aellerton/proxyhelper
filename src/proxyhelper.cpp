@@ -28,12 +28,12 @@ int main(int argc, const char **argv)
 
         std::cout << "usage: "
             << PathFindFileNameA(argv[0])
-            << "[flags]\n\n"
-            << "Options\n\n"
+            << " [flags]\n\n"
+            << "Options:\n\n"
             << "  -c --cmd    set env for CMD (DOS) shell \n"
             << "  -b --bash   set env for Bash shell (Cygwin, Git Bash, msys)\n"
             << "  -x --setx   setx style\n"
-            << "  -n --nom    settings for NPM\n"
+            << "  -n --npm    settings for NPM\n"
             << std::endl;
         return 0;
     }
