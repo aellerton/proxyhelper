@@ -7,7 +7,7 @@ Useful for generating settings for command-line programs like curl, npm, pip, et
 
 In cygwin, git-bash or msys2:
 
-```bash
+```
 $ ./proxyhelper --help
 usage: proxyhelper.exe [flags]
 
@@ -41,4 +41,5 @@ C:\>
 ### Other notes
 
 For msys2, may also be relevant: https://stackoverflow.com/a/47335314
+
 For NPM on windows, see: https://stackoverflow.com/a/21241320
