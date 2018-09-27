@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "proxy_info.h"
+#include "proxyinfo.h"
 #include <stdio.h>
 
 /**
- *
+ * Attempt to detect the proxy, if any. Mutate struct parameter
+ * with results and return an enum code indicating success or failure.
  *
  * See see https://docs.microsoft.com/en-us/windows/desktop/winhttp/winhttp-autoproxy-api
  */
