@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#define PROXY_INFO_DEFAULT_HOSTNAME (L"www.microsoft.com")
-#define PROXY_INFO_DEFAULT_PATH (L"/ms.htm")
+constexpr auto PROXY_INFO_DEFAULT_HOSTNAME = (L"www.microsoft.com");
+constexpr auto PROXY_INFO_DEFAULT_PATH = (L"/ms.htm");
 
 enum ProxyInfoResultCode {
     OK_PROXY_INFO = 0,
@@ -46,4 +46,6 @@ struct ProxyInfoResult {
     }
 };
 
-ProxyInfoResultCode GetProxyInfo(ProxyInfoResult * pResult);
+ProxyInfoResultCode get_proxy_info(ProxyInfoResult * pResult);
+std::string get_result_code_text(ProxyInfoResultCode code);
+

@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="src/pch.h" />
     <ClInclude Include="src/proxyinfo.h" />
+    <ClInclude Include="src\proxyout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src/pch.cpp">
@@ -167,6 +168,7 @@
     </ClCompile>
     <ClCompile Include="src/proxyhelper.cpp" />
     <ClCompile Include="src/proxyinfo.cpp" />
+    <ClCompile Include="src\proxyout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

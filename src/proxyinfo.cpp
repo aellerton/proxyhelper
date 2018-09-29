@@ -8,7 +8,7 @@
  *
  * See see https://docs.microsoft.com/en-us/windows/desktop/winhttp/winhttp-autoproxy-api
  */
-ProxyInfoResultCode GetProxyInfo(ProxyInfoResult * pResult) {
+ProxyInfoResultCode get_proxy_info(ProxyInfoResult * pResult) {
     HINTERNET hHttpSession = NULL;
     HINTERNET hConnect = NULL;
     HINTERNET hRequest = NULL;
@@ -166,4 +166,25 @@ ProxyInfoResultCode GetProxyInfo(ProxyInfoResult * pResult) {
     }
 
     return OK_PROXY_INFO;
+}
+
+std::string get_result_code_text(ProxyInfoResultCode code) {
+    switch (code) {
+    case OK_PROXY_INFO:
+        return "OK";
+    case E_FAIL_WIN_HTTP_OPEN:
+        return "FAIL_WIN_HTTP_OPEN";
+    case E_FAIL_WIN_HTTP_CONNECT:
+        return "FAIL_WIN_HTTP_CONNECT";
+    case E_FAIL_WIN_HTTP_OPEN_REQUEST:
+        return "FAIL_WIN_HTTP_OPEN_REQUEST";
+    case E_FAIL_WIN_HTTP_SET_OPTION:
+        return "FAIL_WIN_HTTP_SET_OPTION";
+    case E_FAIL_WIN_HTTP_SEND_REQUEST:
+        return "FAIL_WIN_HTTP_SEND_REQUEST";
+    case E_FAIL_WIN_HTTP_RECEIVE_RESPONSE:
+        return "FAIL_WIN_HTTP_RECEIVE_RESPONSE";
+    default:
+        return "(Unknown error)";
+    }
 }

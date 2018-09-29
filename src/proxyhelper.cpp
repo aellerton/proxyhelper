@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "proxyinfo.h"
+#include "proxyout.h"
 #include <iostream>
 
 
@@ -39,72 +40,31 @@ int main(int argc, const char **argv)
     }
 
     ProxyInfoResult result;
-    ProxyInfoResultCode code = GetProxyInfo(&result);
+    ProxyInfoResultCode code = get_proxy_info(&result);
 
-    if (isVerbose) {
-        std::cout << "proxy query result:" << code << std::endl;
+    if (code != OK_PROXY_INFO) {
+        std::cout << "Failed: " << get_result_code_text(code) << " (" << code << ")" << std::endl;
+        return code; // returns non-zero to caller
     }
 
     if (wantBash) {
-        if (isVerbose) std::wcout << "# bash\n";
-        if (result.hasProxy) {
-            std::wcout
-                << "export http_proxy=" << result.proxy << std::endl
-                << "export https_proxy=" << result.proxy << std::endl
-                << "export ftp_proxy=" << result.proxy << std::endl
-                << "export rsync_proxy=" << result.proxy << std::endl
-                ;
-        } else {
-            std::wcout
-                << "unset http_proxy" << std::endl
-                << "unset https_proxy" << std::endl
-                << "unset ftp_proxy" << std::endl
-                << "unset rsync_proxy" << std::endl
-                ;
-        }
+        std::wcout << get_bash(result, isVerbose);
     }
 
     if (wantSetx) {
-        std::wcout
-            << (isVerbose ? "# setx style:\n" : "")
-            << "setx http_proxy = \"" << result.proxy << "\"" << std::endl
-            << "setx https_proxy = \"" << result.proxy << "\"" << std::endl
-            << "setx ftp_proxy = \"" << result.proxy << "\"" << std::endl
-            << "setx rsync_proxy = \"" << result.proxy << "\"" << std::endl
-            ;
+        std::wcout << get_setx(result, isVerbose);
     }
 
     if (wantCmd) {
-        std::wcout
-            << (isVerbose ? "rem CMD style:\n" : "")
-            << "set http_proxy=" << result.proxy << "" << std::endl
-            << "set https_proxy=" << result.proxy << "" << std::endl
-            << "set ftp_proxy=" << result.proxy << "" << std::endl
-            << "set rsync_proxy=" << result.proxy << "" << std::endl
-            ;
+        std::wcout << get_cmd(result, isVerbose);
     }
 
     if (wantNpm) {
-        std::wcout << (isVerbose ? "# NPM configuration:\n" : "");
-        if (result.hasProxy) {
-            std::wcout
-                << "npm config set proxy " << result.proxy << std::endl
-                << "npm config set https-proxy " << result.proxy << std::endl
-                ;
-        }
-        else {
-            std::wcout
-                << "npm config delete proxy" << std::endl
-                << "npm config delete https-proxy" << std::endl
-                ;
-        }
+        std::wcout << get_npm(result, isVerbose);
     }
 
     if (!anyShell) {
-        std::wcout << "status: " << (result.hasProxy ? "DETECTED a proxy" : "NO proxy detected") << std::endl;
-        std::wcout << "proxy: [" << result.proxy << "]" << std::endl;
-        std::wcout << "proxy bypass: [" << result.proxyBypass << "]" << std::endl;
+        std::wcout << get_general(result, isVerbose);
     }
-    return code;
+    return 0;
 }
-
