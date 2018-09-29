@@ -2,6 +2,37 @@
 #include "proxyinfo.h"
 #include <stdio.h>
 
+ProxyInfoResult::ProxyInfoResult()
+: hostname(PROXY_INFO_DEFAULT_HOSTNAME)
+, path(PROXY_INFO_DEFAULT_PATH)
+, hasProxy(false)
+{}
+
+ProxyInfoResult::ProxyInfoResult(const LPWSTR pHostname, const LPWSTR pPath)
+    : hostname(pHostname == nullptr ? PROXY_INFO_DEFAULT_HOSTNAME : pHostname)
+    , path(pPath == nullptr ? PROXY_INFO_DEFAULT_PATH : pPath)
+    , hasProxy(false)
+{}
+
+ProxyInfoResult::ProxyInfoResult(const std::wstring &hostname, const std::wstring &path)
+    : hostname(hostname)
+    , path(path)
+    , hasProxy(false)
+{}
+
+// Return full href like "https://www.google.com/foo/bar/"
+std::wstring ProxyInfoResult::href() const {
+    const std::wstring scheme = L"http://"; // not sure if this needs to be configurable
+    return scheme + hostname + path;
+}
+
+std::wstring first_host(const std::wstring & s) {
+    // If `s` contains a ";" then return everything from the start up to and prior to that char.
+    // In every other case, return the entire `s`.
+    size_t i = s.find_first_of(L';');
+    return s.substr(0, i);
+}
+
 /**
  * Attempt to detect the proxy, if any. Mutate struct parameter
  * with results and return an enum code indicating success or failure.
@@ -136,8 +167,17 @@ ProxyInfoResultCode get_proxy_info(ProxyInfoResult * pResult) {
     //
     // A response has been received, then process it.
     //
-    pResult->proxy = ProxyInfo.lpszProxy == nullptr ? L"" : ProxyInfo.lpszProxy;
-    pResult->proxyBypass = ProxyInfo.lpszProxyBypass == nullptr ? L"" : ProxyInfo.lpszProxyBypass;
+    pResult->proxy = ProxyInfo.lpszProxy == nullptr ? PROXY_WHEN_NO_PROXY : ProxyInfo.lpszProxy;
+    pResult->proxyBypass = ProxyInfo.lpszProxyBypass == nullptr ? PROXY_WHEN_NO_PROXY : ProxyInfo.lpszProxyBypass;
+
+    // Maybe should make setProxy() method
+    pResult->proxy1 = first_host(pResult->proxy);
+
+    // Prepend "http://" if proxy doesn't start with http/https
+    std::wstring http(L"http");
+    if (0 != pResult->proxy1.compare(0, http.length(), http)) {
+        pResult->proxy1 = http + L"://" + pResult->proxy1;
+    }
 
     //
     // Clean up the WINHTTP_PROXY_INFO structure.
