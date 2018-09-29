@@ -6,6 +6,9 @@ and display settings needed for various programs to work with that proxy.
 If you're in a corporate environment and the browsers work fine but you can't
 run curl, httpie, NPM, pip etc from a console, then this program should get you running.
 
+In technical terms, this program uses the Windows API to process the proxy auto-config
+(PAC) file on the internal network, then display settings on the console.
+
 In a bash-like shell (e.g. cygwin, git-bash or msys2):
 
 ```
